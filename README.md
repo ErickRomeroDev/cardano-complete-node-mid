@@ -11,7 +11,14 @@ Questions:
 Deployed contract at address: 02002d2d4963d52532b9c7bcf92d0fc2bd94cc499b324a316222403033765d64739e
 
 
+To run the proof server
+docker run -p 6300:6300 midnightnetwork/proof-server -- 'midnight-proof-server --network testnet'
 
+install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+
+export COMPACT_HOME="/home/erick/my-binaries/compactc"
+export PATH="$COMPACT_HOME:$PATH"
 
 
 compactc src/bboard.compact src/managed/bboard   //at the file of the contract
