@@ -20,13 +20,17 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 export COMPACT_HOME="/home/erick/my-binaries/compactc"
 export PATH="$COMPACT_HOME:$PATH"
 
+//at each folder always run nvm install to update the node version and remember to do a yarn at the root level again
 
-compactc src/bboard.compact src/managed/bboard   //at the file of the contract
-
-npx turbo build //at the level of the specific project
+npx turbo build //at the level of the specific project  //when adding new woekspace
 
 yarn testnet-remote ///at the file of the specifc project cli level
 
-donmt forget to check version of node...nvm install
+
+
+//in case you just want to run the contract by itself, go to the contract level and run
+compactc src/bboard.compact src/managed/bboard   //at the file of the contract
+
+
 
 
