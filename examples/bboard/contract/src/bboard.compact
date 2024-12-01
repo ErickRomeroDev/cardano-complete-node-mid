@@ -1,40 +1,57 @@
 include "std";
 
-export enum STATE { vacant, occupied }
+witness find_auth_path(pk: Bytes<32>): MerkleTreePath<10, Bytes<32>>;
+witness secret_key(): Bytes<32>;
 
-export ledger state: Cell<STATE>;
-export ledger message: Cell<Maybe<Opaque<"string">>>;
-export ledger instance: Counter;
-export ledger poster: Cell<Bytes<32>>;
+export ledger authorizedCommitments: HistoricMerkleTree<10, Bytes<32>>;
+export ledger authorizedNullifiers: Set<Bytes<32>>;
+export ledger restrictedCounter1: Counter;
+export ledger restrictedCounter2: Counter;
+export ledger restrictedCounter3: Counter;
 
-constructor() {
-    state = STATE.vacant;
-    message = none<Opaque<"string">>();
-    instance.increment(1);
+export circuit add_authority(pk: Bytes<32>): Void {
+  authorizedCommitments.insert(pk);
 }
 
-witness local_secret_key(): Bytes<32>;
-
-export circuit post(new_message: Opaque<"string">): Void {
-    assert state == STATE.vacant
-        "Attempted to post to an occupied board";
-    poster = public_key(local_secret_key(), instance as Field as Bytes<32>);
-    message = some<Opaque<"string">>(new_message);
-    state = STATE.occupied;
+export circuit increment1(): Void {
+  const sk = secret_key();
+  const auth_path = find_auth_path(public_key(sk));  
+  assert authorizedCommitments.check_root(merkle_tree_path_root<10, Bytes<32>>(auth_path))
+    "not authorized";
+  const nul = nullifier(sk);
+  assert !authorizedNullifiers.member(nul) "already incremented";
+  authorizedNullifiers.insert(nul);
+  restrictedCounter1.increment(1);
 }
 
-export circuit take_down(): Opaque<"string"> {
-    assert state == STATE.occupied
-        "Attempted to take down post from an empty board";
-    assert poster == public_key(local_secret_key(), instance as Field as Bytes<32>)
-        "Attempted to take down post, but not the current poster";
-    const former_msg = message.value;
-    state = STATE.vacant;
-    instance.increment(1);
-    message = none<Opaque<"string">>();
-    return former_msg;
+export circuit increment2(): Void {
+  const sk = secret_key();
+  const auth_path = find_auth_path(public_key(sk));  
+  assert authorizedCommitments.check_root(merkle_tree_path_root<10, Bytes<32>>(auth_path))
+    "not authorized";
+  const nul = nullifier(sk);
+  assert !authorizedNullifiers.member(nul) "already incremented";
+  authorizedNullifiers.insert(nul);
+  restrictedCounter2.increment(1);
 }
 
-export circuit public_key(sk: Bytes<32>, instance: Bytes<32>): Bytes<32> {
-    return persistent_hash<Vector<2, Bytes<32>>>([persistent_hash<Vector<2, Bytes<32>>>([pad(32, "bboard:pk:"), instance]), sk]);
+export circuit increment3(): Void {
+  const sk = secret_key();
+  const auth_path = find_auth_path(public_key(sk));  
+  assert authorizedCommitments.check_root(merkle_tree_path_root<10, Bytes<32>>(auth_path))
+    "not authorized";
+  const nul = nullifier(sk);
+  assert !authorizedNullifiers.member(nul) "already incremented";
+  authorizedNullifiers.insert(nul);
+  restrictedCounter3.increment(1);
 }
+
+export circuit public_key(sk: Bytes<32>): Bytes<32> {
+  return persistent_hash<Vector<2, Bytes<32>>>([pad(32, "commitment-domain"), sk]);
+}
+
+export circuit nullifier(sk: Bytes<32>): Bytes<32> {
+  return persistent_hash<Vector<2, Bytes<32>>>([pad(32, "nullifier-domain"), sk]);
+}
+
+

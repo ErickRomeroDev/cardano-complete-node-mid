@@ -7,8 +7,8 @@
     "examples/counter/*",
     "examples/bboard/*",
     "examples/questions/*",
-    "examples/bboard-tutorial/*",
-    "examples/voting/*"
+    "examples/votings/*",
+    "examples/bboard-tutorial/*"
   ],
   "scripts": {
     "compact": "turbo run compact",

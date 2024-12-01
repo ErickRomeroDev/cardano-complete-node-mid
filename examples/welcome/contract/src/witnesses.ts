@@ -11,6 +11,7 @@ export const createOrganizerWelcomePrivateState = (organizerSecretKey: Uint8Arra
   participantId: null,
 });
 
+
 export const createParticipantWelcomePrivateState = () => ({
   organizerSecretKey: null,
   participantId: null,

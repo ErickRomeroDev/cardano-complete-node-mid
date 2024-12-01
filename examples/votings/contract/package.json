@@ -1,5 +1,5 @@
 {
-  "name": "@midnight-ntwrk/voting-contract",
+  "name": "@midnight-ntwrk/votings-contract",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

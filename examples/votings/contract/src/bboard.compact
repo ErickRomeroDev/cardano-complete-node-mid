@@ -46,11 +46,11 @@ export circuit increment3(): Void {
   restrictedCounter3.increment(1);
 }
 
-circuit public_key(sk: Bytes<32>): Bytes<32> {
+export circuit public_key(sk: Bytes<32>): Bytes<32> {
   return persistent_hash<Vector<2, Bytes<32>>>([pad(32, "commitment-domain"), sk]);
 }
 
-circuit nullifier(sk: Bytes<32>): Bytes<32> {
+export circuit nullifier(sk: Bytes<32>): Bytes<32> {
   return persistent_hash<Vector<2, Bytes<32>>>([pad(32, "nullifier-domain"), sk]);
 }
 

@@ -1,5 +1,5 @@
 {
-  "name": "@midnight-ntwrk/voting-cli",
+  "name": "@midnight-ntwrk/votings-cli",
   "version": "0.1.0",
   "author": "IOG",
   "license": "MIT",
@@ -17,8 +17,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@midnight-ntwrk/questions-api": "workspace:*",
-    "@midnight-ntwrk/questions-contract": "workspace:*",
+    "@midnight-ntwrk/votings-api": "workspace:*",
+    "@midnight-ntwrk/votings-contract": "workspace:*",
     "pino": "^8.16.1",
     "ws": "^8.14.2"
   },
